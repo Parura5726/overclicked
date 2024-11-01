@@ -2,12 +2,9 @@
 
 import { addCommand, Command, getCommands } from "@/data";
 import { MENUS } from "@/menus";
+import { delay } from "@/utils";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-function delay(time: number) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
 
 export default function Page() {
   const params = useParams();
