@@ -43,7 +43,7 @@ export async function getCommands(): Promise<Command[]> {
 }
 
 export async function getCommandToPrepare(): Promise<Command[]> {
-  return commands.filter((c) => c.prepared);
+  return commands.filter((c) => !c.prepared);
 }
 
 export async function getCommandToServe(register: string): Promise<Command[]> {
