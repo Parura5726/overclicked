@@ -1,0 +1,34 @@
+@use 'colors' as *;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+
+  transition: all 0.2s ease;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+
+  color: var(--text-color);
+  background: var(--bg-color);
+
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+main {
+  margin: 3em;
+}
+
+h1 {
+  width: 100%;
+  font-size: 3rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+p {
+  text-align: left;
+}

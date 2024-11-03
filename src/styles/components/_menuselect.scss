@@ -1,0 +1,54 @@
+.menu-select {
+  position: relative;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 3em;
+  padding: 1.5em;
+  border-radius: 1em;
+  background-color: rgb(3, 59, 156);
+  color: white;
+  font-size: 1.4rem;
+  max-width: 25rem;
+  aspect-ratio: 2/1;
+  cursor: pointer;
+  user-select: none;
+
+  &:not(:has(.badge:hover)):hover {
+    background-color: rgb(3, 53, 138);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:has(.badge-remove-select:active) {
+    transform: rotate(-5deg);
+  }
+
+  .badge {
+    position: absolute;
+    width: 3.5rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .badge-remove-select {
+    background-color: rgb(129, 0, 0);
+    top: -12%;
+    left: -6%;
+    &:hover {
+      background-color: rgb(150, 0, 0);
+    }
+  }
+
+  .badge-num-select {
+    background-color: rgb(0, 5, 80);
+    top: -12%;
+    right: -6%;
+    cursor: default;
+  }
+}
