@@ -1,5 +1,6 @@
 "use client";
 
+import MenuSelect from "@/components/MenuSelect";
 import { addCommand, Command, getCommands } from "@/data";
 import { MENUS } from "@/menus";
 import { delay } from "@/utils";
@@ -34,19 +35,20 @@ export default function Page() {
   return (
     <div>
       {MENUS.map((m, i) => (
-        <div>
-          <p>{m.name}</p>
-          <button
-            onClick={() => {
-              const newCommand = [...currentCommand];
-              newCommand[i] += 1;
-              setCurrentCommand(newCommand);
-            }}
-          >
-            Add
-          </button>
-          <p>{currentCommand[i]}</p>
-        </div>
+        <MenuSelect
+          menu={m}
+          numSelects={currentCommand[i]}
+          addSelect={() => {
+            const newCommand = [...currentCommand];
+            newCommand[i] += 1;
+            setCurrentCommand(newCommand);
+          }}
+          removeSelect={() => {
+            const newCommand = [...currentCommand];
+            newCommand[i] -= 1;
+            setCurrentCommand(newCommand);
+          }}
+        />
       ))}
       <button
         onClick={async () => {
@@ -54,7 +56,7 @@ export default function Page() {
           setCurrentCommand(new Array(MENUS.length).fill(0));
         }}
       >
-        Save
+        Send Order
       </button>
       <p>{JSON.stringify(commands)}</p>
     </div>
