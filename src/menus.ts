@@ -4,6 +4,8 @@ export interface Menu {
 }
 
 export const MENUS: Menu[] = [
-  { name: "a", description: "this is a" },
-  { name: "b", description: "this is b" },
+  { name: "Temptation", description: "Tomates séchées, Mozza, Pesto" },
+  { name: "Chaos", description: "Chèvre, Miel" },
+  { name: "Oblivion", description: "Champignons, Oignons caramélisés, Pesto" },
+  { name: "Craving", description: "Ovomaltine" },
 ];
