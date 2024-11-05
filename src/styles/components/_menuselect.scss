@@ -3,13 +3,12 @@
   display: flex;
   justify-content: left;
   align-items: center;
-  margin: 3em;
+  margin: 1.5em;
   padding: 1.5em;
   border-radius: 1em;
   background-color: rgb(3, 59, 156);
   color: white;
   font-size: 1.4rem;
-  max-width: 25rem;
   aspect-ratio: 2/1;
   cursor: pointer;
   user-select: none;
@@ -23,7 +22,7 @@
   }
 
   &:has(.badge-remove-select:active) {
-    transform: rotate(-5deg);
+    transform: rotate(-2deg);
   }
 
   .badge {

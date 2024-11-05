@@ -34,23 +34,25 @@ export default function Page() {
 
   return (
     <div>
-      {MENUS.map((m, i) => (
-        <MenuSelect
-          key={i}
-          menu={m}
-          numSelects={currentCommand[i]}
-          addSelect={() => {
-            const newCommand = [...currentCommand];
-            newCommand[i] += 1;
-            setCurrentCommand(newCommand);
-          }}
-          removeSelect={() => {
-            const newCommand = [...currentCommand];
-            newCommand[i] -= 1;
-            setCurrentCommand(newCommand);
-          }}
-        />
-      ))}
+      <div className="menu-selections">
+        {MENUS.map((m, i) => (
+          <MenuSelect
+            key={i}
+            menu={m}
+            numSelects={currentCommand[i]}
+            addSelect={() => {
+              const newCommand = [...currentCommand];
+              newCommand[i] += 1;
+              setCurrentCommand(newCommand);
+            }}
+            removeSelect={() => {
+              const newCommand = [...currentCommand];
+              newCommand[i] -= 1;
+              setCurrentCommand(newCommand);
+            }}
+          />
+        ))}
+      </div>
       <button
         onClick={async () => {
           await addOrder(currentCommand, register);
