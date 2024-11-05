@@ -1,9 +1,11 @@
 "use server";
 
-import fs from "node:fs/promises";
+import fs from "node:fs";
 
 import { Mutex } from "async-mutex";
 import { existsSync, readFileSync } from "node:fs";
+import { DevBundlerService } from "next/dist/server/lib/dev-bundler-service";
+import Database from "better-sqlite3";
 
 export interface Order {
   id: number;
@@ -13,65 +15,56 @@ export interface Order {
   served: boolean;
 }
 
-var lock = new Mutex();
-var seq = 0;
-var commands: Order[] = [];
-var types: string[] = [];
+function database() {
+  const db = Database("db.sqlite");
+  db.exec(fs.readFileSync("migration.sql").toString());
+  return db;
+}
 
-if (existsSync("db.json")) {
-  commands = JSON.parse(readFileSync("db.json").toString());
+function parseOrders(orders: any): Order[] {
+  return orders.map((o: any) => ({ ...o, amounts: JSON.parse(o.amounts) }));
 }
 
 export async function addOrder(amounts: number[], register: string) {
-  await lock.runExclusive(async () => {
-    commands.push({
-      id: seq,
-      amounts,
-      register,
-      prepared: false,
-      served: false,
-    });
-
-    seq += 1;
-
-    await save();
-  });
+  const db = database();
+  db.prepare("INSERT INTO orders(amounts, register) VALUES(?, ?)").run([
+    JSON.stringify(amounts),
+    register,
+  ]);
+  db.close();
 }
 
 export async function getOrders(): Promise<Order[]> {
-  return commands;
+  const db = await database();
+  const res = await db.prepare("SELECT * FROM orders").all();
+  db.close();
+  return res as Order[];
 }
 
 export async function getOrdersToPrepare(): Promise<Order[]> {
-  return commands.filter((c) => !c.prepared);
+  return parseOrders(
+    database().prepare("SELECT * FROM orders WHERE prepared = false;").all()
+  );
 }
 
 export async function getOrdersToServe(register: string): Promise<Order[]> {
-  return commands.filter(
-    (c) => c.prepared && !c.served && c.register == register
+  return parseOrders(
+    database()
+      .prepare(
+        "SELECT * FROM orders WHERE prepared = true AND served = false AND register = ?;"
+      )
+      .all([register])
   );
 }
 
 export async function markAsPrepared(id: number) {
-  await lock.runExclusive(async () => {
-    const command = commands.find((c) => c.id == id);
-    if (command) {
-      command.prepared = true;
-      await save();
-    }
-  });
+  database()
+    .prepare("UPDATE orders SET prepared = true WHERE id = ?;")
+    .run([id]);
 }
 
 export async function markAsServed(id: number) {
-  await lock.runExclusive(async () => {
-    const command = commands.find((c) => c.id == id);
-    if (command) {
-      command.served = true;
-      await save();
-    }
-  });
-}
-
-async function save() {
-  await fs.writeFile("db.json", JSON.stringify(commands));
+  database()
+    .prepare("UPDATE orders SET served = true WHERE id = ?;")
+    .run([id]);
 }
