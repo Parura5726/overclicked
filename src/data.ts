@@ -5,7 +5,7 @@ import fs from "node:fs/promises";
 import { Mutex } from "async-mutex";
 import { existsSync, readFileSync } from "node:fs";
 
-export interface Command {
+export interface Order {
   id: number;
   amounts: number[];
   register: string;
@@ -15,14 +15,14 @@ export interface Command {
 
 var lock = new Mutex();
 var seq = 0;
-var commands: Command[] = [];
+var commands: Order[] = [];
 var types: string[] = [];
 
 if (existsSync("db.json")) {
   commands = JSON.parse(readFileSync("db.json").toString());
 }
 
-export async function addCommand(amounts: number[], register: string) {
+export async function addOrder(amounts: number[], register: string) {
   await lock.runExclusive(async () => {
     commands.push({
       id: seq,
@@ -38,15 +38,15 @@ export async function addCommand(amounts: number[], register: string) {
   });
 }
 
-export async function getCommands(): Promise<Command[]> {
+export async function getOrders(): Promise<Order[]> {
   return commands;
 }
 
-export async function getCommandToPrepare(): Promise<Command[]> {
+export async function getOrdersToPrepare(): Promise<Order[]> {
   return commands.filter((c) => !c.prepared);
 }
 
-export async function getCommandToServe(register: string): Promise<Command[]> {
+export async function getOrdersToServe(register: string): Promise<Order[]> {
   return commands.filter(
     (c) => c.prepared && !c.served && c.register == register
   );

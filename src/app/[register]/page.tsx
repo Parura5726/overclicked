@@ -1,7 +1,7 @@
 "use client";
 
 import MenuSelect from "@/components/MenuSelect";
-import { addCommand, Command, getCommands } from "@/data";
+import { addOrder, Order, getOrders } from "@/data";
 import { MENUS } from "@/menus";
 import { delay } from "@/utils";
 import { useParams } from "next/navigation";
@@ -10,13 +10,13 @@ import { useEffect, useState } from "react";
 export default function Page() {
   const params = useParams();
   const register = params["register"] as string;
-  const [commands, setCommands] = useState([] as Command[]);
+  const [commands, setCommands] = useState([] as Order[]);
 
   useEffect(() => {
     let fetch = true;
     let fn = async () => {
       while (fetch) {
-        setCommands(await getCommands());
+        setCommands(await getOrders());
         await delay(1000);
       }
     };
@@ -36,6 +36,7 @@ export default function Page() {
     <div>
       {MENUS.map((m, i) => (
         <MenuSelect
+          key={i}
           menu={m}
           numSelects={currentCommand[i]}
           addSelect={() => {
@@ -52,7 +53,7 @@ export default function Page() {
       ))}
       <button
         onClick={async () => {
-          await addCommand(currentCommand, register);
+          await addOrder(currentCommand, register);
           setCurrentCommand(new Array(MENUS.length).fill(0));
         }}
       >

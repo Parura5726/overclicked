@@ -1,22 +1,19 @@
 "use client";
 
-import {
-  Command,
-  getCommands,
-  getCommandToPrepare,
-  markAsPrepared,
-} from "@/data";
+import OrderStatus from "@/components/OrderStatus";
+import { Order, getOrders, getOrdersToPrepare, markAsPrepared } from "@/data";
+import { MENUS } from "@/menus";
 import { delay } from "@/utils";
 import { useEffect, useState } from "react";
 
 export default function Page() {
-  const [commands, setCommands] = useState([] as Command[]);
+  const [orders, setOrders] = useState([] as Order[]);
 
   useEffect(() => {
     let fetch = true;
     let fn = async () => {
       while (fetch) {
-        setCommands(await getCommandToPrepare());
+        setOrders(await getOrdersToPrepare());
         await delay(1000);
       }
     };
@@ -30,11 +27,13 @@ export default function Page() {
 
   return (
     <div>
-      {commands.map((c) => (
-        <div>
-          <p>{c.amounts}</p>
-          <button onClick={() => markAsPrepared(c.id)}>Prepared</button>
-        </div>
+      {orders.map((o) => (
+        <OrderStatus
+          key={o.id}
+          menuItems={MENUS}
+          order={o}
+          markAsPrepared={markAsPrepared}
+        />
       ))}
     </div>
   );
