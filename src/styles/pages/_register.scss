@@ -1,5 +1,26 @@
-.menu-selections {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1em;
+.register {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2em;
+
+  height: 100vh;
+  overflow: hidden;
+
+  padding: 3em;
+
+
+  .menu-selections {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2em;
+  }
+
+  button {
+    margin: 0 auto;
+    font-size: 1.5rem;
+    padding: 1em 5em;
+    --button-color: #000550;
+    --button-text-color: #FFF;
+  }
 }

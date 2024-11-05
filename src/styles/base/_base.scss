@@ -19,7 +19,7 @@ body {
 }
 
 main {
-  margin: 3em;
+  margin: 0em;
 }
 
 h1 {
@@ -41,11 +41,13 @@ button {
   font-size: 1rem;
   font-weight: bold;
   background-color: transparent;
-  border: 2px solid rgb(255, 255, 255);
-  color: rgb(255, 255, 255);
+  border: 2px solid var(--button-color);
+  color: var(--button-color);
+
+  user-select: none;
 
   &:hover {
-    background-color: rgb(255, 255, 255);
-    color: rgb(46, 46, 46);
+    background-color: var(--button-color);
+    color: var(--button-text-color);
   }
 }

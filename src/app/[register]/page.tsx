@@ -33,7 +33,7 @@ export default function Page() {
   );
 
   return (
-    <div>
+    <div className="register">
       <div className="menu-selections">
         {MENUS.map((m, i) => (
           <MenuSelect
