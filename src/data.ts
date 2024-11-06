@@ -15,56 +15,60 @@ export interface Order {
   served: boolean;
 }
 
-function database() {
+function runOnDb<T>(func: (db: Database.Database) => T) {
   const db = Database("db.sqlite");
   db.exec(fs.readFileSync("migration.sql").toString());
-  return db;
+  const res = func(db);
+  db.close();
+  return res;
 }
 
 function parseOrders(orders: any): Order[] {
-  return orders.map((o: any) => ({ ...o, amounts: JSON.parse(o.amounts) }));
+  return orders.map(parseOrder);
 }
 
-export async function addOrder(amounts: number[], register: string) {
-  const db = database();
-  db.prepare("INSERT INTO orders(amounts, register) VALUES(?, ?)").run([
-    JSON.stringify(amounts),
-    register,
-  ]);
-  db.close();
+function parseOrder(order: any): Order {
+  return { ...order, amounts: JSON.parse(order.amounts) };
 }
 
-export async function getOrders(): Promise<Order[]> {
-  const db = await database();
-  const res = await db.prepare("SELECT * FROM orders").all();
-  db.close();
-  return res as Order[];
-}
-
-export async function getOrdersToPrepare(): Promise<Order[]> {
-  return parseOrders(
-    database().prepare("SELECT * FROM orders WHERE prepared = false;").all()
+export const addOrder = async (amounts: number[], register: string) =>
+  runOnDb((db) =>
+    parseOrder(
+      db
+        .prepare(
+          "INSERT INTO orders(amounts, register) VALUES(?, ?) RETURNING *"
+        )
+        .get([JSON.stringify(amounts), register])
+    )
   );
-}
 
-export async function getOrdersToServe(register: string): Promise<Order[]> {
-  return parseOrders(
-    database()
-      .prepare(
-        "SELECT * FROM orders WHERE prepared = true AND served = false AND register = ?;"
-      )
-      .all([register])
+export const getOrders = async () =>
+  runOnDb((db) => parseOrders(db.prepare("SELECT * FROM orders").all()));
+
+export const getOrdersToPrepare = async () =>
+  runOnDb((db) =>
+    parseOrders(
+      db.prepare("SELECT * FROM orders WHERE prepared = false;").all()
+    )
   );
-}
 
-export async function markAsPrepared(id: number) {
-  database()
-    .prepare("UPDATE orders SET prepared = true WHERE id = ?;")
-    .run([id]);
-}
+export const getOrdersToServe = async (register: string) =>
+  runOnDb((db) =>
+    parseOrders(
+      db
+        .prepare(
+          "SELECT * FROM orders WHERE prepared = true AND served = false AND register = ?;"
+        )
+        .all([register])
+    )
+  );
 
-export async function markAsServed(id: number) {
-  database()
-    .prepare("UPDATE orders SET served = true WHERE id = ?;")
-    .run([id]);
-}
+export const markAsPrepared = async (id: number) =>
+  runOnDb((db) =>
+    db.prepare("UPDATE orders SET prepared = true WHERE id = ?;").run([id])
+  );
+
+export const markAsServed = async (id: number) =>
+  runOnDb((db) =>
+    db.prepare("UPDATE orders SET served = true WHERE id = ?;").run([id])
+  );
