@@ -42,6 +42,10 @@ export default function Page() {
               key={i}
               menu={m}
               numSelects={currentOrder[i]}
+              remaining={
+                m.initialStock -
+                orders.reduce((acc, o) => acc + o.amounts[i], 0)
+              }
               addSelect={() => {
                 const newOrder = [...currentOrder];
                 newOrder[i] += 1;
@@ -66,6 +70,14 @@ export default function Page() {
       </div>
       <div className="register-orders">
         <h1>Register {register}</h1>
+        <button
+          className="admin-button"
+          onClick={() => {
+            window.location.href = `/`;
+          }}
+        >
+          Admin
+        </button>
         {orders
           .filter((o) => o.register === register)
           .sort((a, b) => {
@@ -84,7 +96,7 @@ export default function Page() {
               showDetails={false}
               showRegister={false}
               archived={o.served}
-              statusIcon={o.served ? "✅" : (o.prepared ? "🥪❗" : "⏳")}
+              statusIcon={o.served ? "✅" : o.prepared ? "🥪❗" : "⏳"}
             />
           ))}
       </div>
