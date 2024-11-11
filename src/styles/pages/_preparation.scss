@@ -1,0 +1,10 @@
+.preparation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  margin: 2em;
+
+  .order-status {
+    flex: 1 1 0px;
+  }
+}

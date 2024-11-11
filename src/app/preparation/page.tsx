@@ -26,13 +26,15 @@ export default function Page() {
   }, []);
 
   return (
-    <div>
+    <div className="preparation">
       {orders.map((o) => (
         <OrderStatus
           key={o.id}
           menuItems={MENUS}
           order={o}
-          markAsPrepared={markAsPrepared}
+          buttonText="Prepared"
+          buttonAction={markAsPrepared}
+          showDetails={false}
         />
       ))}
     </div>

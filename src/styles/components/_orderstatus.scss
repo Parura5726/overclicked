@@ -1,15 +1,24 @@
 .order-status {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   gap: 1rem;
-  margin: 3em;
+  // margin: 3em;
   padding: 1.5em;
   border-radius: 1em;
   background-color: rgb(36, 156, 3);
   color: white;
   font-size: 1.3rem;
   max-width: 25rem;
+
+  &.archived {
+    background-color: rgba(36, 156, 3, 0.398);
+  }
+
+  h2 {
+    display: flex;
+    justify-content: space-between;
+  }
 
   .order-items {
     display: flex;
@@ -18,7 +27,11 @@
 
     .order-item {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      p {
+        display: flex;
+        justify-content: space-between;
+      }
     }
   }
 }
