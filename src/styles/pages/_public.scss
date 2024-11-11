@@ -1,0 +1,49 @@
+.public {
+  padding: 4em;
+  display: flex;
+  gap: 2em;
+
+  width: 100%;
+  height: 100vh;
+
+  background-color: #0a0919;
+  color: #fff;
+
+  h1 {
+    font-size: 4rem;
+  }
+
+  .menu {
+    flex: 1 1 55%;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+
+    .menu-item {
+      font-size: 2rem;
+    }
+
+    .menu-info {
+      font-size: 3rem;
+    }
+  }
+
+  .ready-orders {
+    flex: 1 1 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    .order {
+      color: #151134;
+      background-color: #00fbff;
+      padding: 1em;
+      border-radius: 1em;
+      font-size: 2rem;
+    }
+
+    p {
+      font-size: 2rem;
+    }
+  }
+}
