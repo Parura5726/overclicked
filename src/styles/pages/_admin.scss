@@ -14,4 +14,11 @@
       max-width: 25%;
     }
   }
+
+  button:not(.orders *) {
+    --button-color: #333333;
+    --button-text-color: #fff;
+    padding: 0.5em;
+    margin: 0.3em;
+  }
 }

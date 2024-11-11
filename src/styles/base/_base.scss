@@ -1,4 +1,4 @@
-@use 'colors' as *;
+@use "colors" as *;
 
 * {
   box-sizing: border-box;
@@ -50,4 +50,9 @@ button {
     background-color: var(--button-color);
     color: var(--button-text-color);
   }
+}
+
+.button-span {
+  display: flex;
+  gap: 0.5em;
 }

@@ -27,9 +27,14 @@ export default function Home() {
 
   return (
     <div className="admin">
-      <h1>Subsonic Catering</h1>
+      <span className="button-span">
+        <h1>Subsonic Catering</h1>
+        <button onClick={() => (window.location.href = "/preparation")}>
+          Preparation
+        </button>
+      </span>
       <div className="stats">
-        <div className="stat">
+        <div className="stat purple">
           <h2>Total</h2>
           <p>{orders.length} Orders</p>
           <p>
@@ -39,7 +44,9 @@ export default function Home() {
             Croques
           </p>
         </div>
-        <div className="stat">
+        <div
+          className="stat purple"
+        >
           <h2>Prepared</h2>
           <p>{orders.filter((o) => o.prepared).length} Orders</p>
           <p>
@@ -51,7 +58,7 @@ export default function Home() {
             Croques
           </p>
         </div>
-        <div className="stat">
+        <div className="stat purple">
           <h2>Served</h2>
           <p>{orders.filter((o) => o.served).length} Orders</p>
           <p>
@@ -85,8 +92,9 @@ export default function Home() {
             }
             return acc;
           }, [] as string[])
+          .sort()
           .map((r, i) => (
-            <div key={i} className="stat">
+            <div key={i} className="stat orange">
               <h2>Register {r}</h2>
               <p>{orders.filter((o) => o.register === r).length} Orders</p>{" "}
               <p>
@@ -94,9 +102,27 @@ export default function Home() {
                   .filter((o) => o.register === r)
                   .reduce((acc, o) => {
                     return acc + o.amounts.reduce((acc, a) => acc + a, 0);
-                  }, 0)}{" "}
+                  }, 0)
+                  
+                  }{" "}
                 Croques Sold
               </p>
+              <span className="button-span">
+                <button
+                  onClick={() => {
+                    window.location.href = `/${r}`;
+                  }}
+                >
+                  Register
+                </button>
+                <button
+                  onClick={() => {
+                    window.location.href = `/${r}/public`;
+                  }}
+                >
+                  Public
+                </button>
+              </span>
             </div>
           ))}
       </div>
