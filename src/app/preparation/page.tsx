@@ -8,12 +8,14 @@ import { useEffect, useState } from "react";
 
 export default function Page() {
   const [orders, setOrders] = useState([] as Order[]);
+  const [ordersToPrepare, setOrdersToPrepare] = useState([] as Order[]);
 
   useEffect(() => {
     let fetch = true;
     let fn = async () => {
       while (fetch) {
-        setOrders(await getOrdersToPrepare());
+        setOrdersToPrepare(await getOrdersToPrepare());
+        setOrders(await getOrders());
         await delay(1000);
       }
     };
@@ -31,22 +33,25 @@ export default function Page() {
         {MENUS.map((m, i) => (
           <div key={i} className="stat">
             <h2>{m.name}</h2>
+            <p>{m.description}</p>
             <p>
-              {orders
-                .filter((o) => !o.prepared && !o.served)
-                .reduce((acc, o) => acc + o.amounts[i], 0)}{" "}
-              to Prepare
+              <b>
+                {ordersToPrepare.reduce((acc, o) => acc + o.amounts[i], 0)}{" "}
+              </b>
+              to prepare
             </p>
             <p>
-              {m.initialStock -
-                orders.reduce((acc, o) => acc + o.amounts[i], 0)}{" "}
-              Remaining
+              <b>
+                {m.initialStock -
+                  orders.reduce((acc, o) => acc + o.amounts[i], 0)}{" "}
+              </b>
+              remaining
             </p>
           </div>
         ))}
       </div>
       <div className="orders">
-        {orders.map((o) => (
+        {ordersToPrepare.map((o) => (
           <OrderStatus
             key={o.id}
             menuItems={MENUS}
