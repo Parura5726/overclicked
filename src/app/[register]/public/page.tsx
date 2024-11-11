@@ -49,9 +49,11 @@ export default function Public() {
       </div>
       <div className="ready-orders">
         <h1>Ready for Pick Up</h1>
-        {
-          pickupOrders.length > 0 ? pickupOrders : <p>No orders ready : please wait  !</p>
-        }
+        {pickupOrders.length > 0 ? (
+          pickupOrders.slice(0, 4)
+        ) : (
+          <p>No orders ready : please wait !</p>
+        )}
       </div>
     </div>
   );
