@@ -3,19 +3,26 @@ import { Menu } from "@/menus";
 export default function MenuSelect({
   menu,
   numSelects,
+  remaining,
   addSelect,
   removeSelect,
 }: {
   menu: Menu;
   numSelects: number;
+  remaining: number;
   addSelect: () => void;
   removeSelect: () => void;
 }) {
+  let possible = remaining - numSelects > 0;
   return (
-    <div className="menu-select" onClick={addSelect}>
+    <div
+      className={`menu-select ${possible ? "active" : ""}`}
+      onClick={possible ? addSelect : () => {}}
+    >
       <div className="menu-details">
         <h2>{menu.name}</h2>
         <p>{menu.description}</p>
+        <p className="smallprint">{remaining} remaining</p>
       </div>
       {numSelects > 0 ? (
         <div
