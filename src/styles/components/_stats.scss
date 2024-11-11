@@ -1,11 +1,13 @@
 .stats {
   display: flex;
   gap: 1em;
-  align-items: center;
+  align-items: stretch;
 
   .stat {
+    user-select: none;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 0.5em;
     padding: 1em;
     align-items: center;
@@ -15,6 +17,19 @@
 
     p {
       font-size: 1.3em;
+      text-align: center;
+    }
+
+    &.orange {
+      background-color: #ffcc6d;
+    }
+
+    &.purple {
+      background-color: #caa1e1;
+    }
+
+    &.red {
+      background-color: #f19696;
     }
   }
 }

@@ -7,6 +7,11 @@
   height: 100vh;
   overflow: hidden;
 
+  .admin-button {
+    --button-color: #000550;
+    --button-text-color: #fff;
+  }
+
   .register-select {
     display: flex;
     flex-direction: column;
@@ -20,11 +25,11 @@
     }
 
     button {
+      --button-color: #000550;
+      --button-text-color: #fff;
       margin: 0 auto;
       font-size: 1.5rem;
       padding: 1em 5em;
-      --button-color: #000550;
-      --button-text-color: #fff;
     }
   }
 
