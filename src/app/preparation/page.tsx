@@ -27,16 +27,36 @@ export default function Page() {
 
   return (
     <div className="preparation">
-      {orders.map((o) => (
-        <OrderStatus
-          key={o.id}
-          menuItems={MENUS}
-          order={o}
-          buttonText="Prepared"
-          buttonAction={markAsPrepared}
-          showDetails={false}
-        />
-      ))}
+      <div className="stats">
+        {MENUS.map((m, i) => (
+          <div key={i} className="stat">
+            <h2>{m.name}</h2>
+            <p>
+              {orders
+                .filter((o) => !o.prepared && !o.served)
+                .reduce((acc, o) => acc + o.amounts[i], 0)}{" "}
+              to Prepare
+            </p>
+            <p>
+              {m.initialStock -
+                orders.reduce((acc, o) => acc + o.amounts[i], 0)}{" "}
+              Remaining
+            </p>
+          </div>
+        ))}
+      </div>
+      <div className="orders">
+        {orders.map((o) => (
+          <OrderStatus
+            key={o.id}
+            menuItems={MENUS}
+            order={o}
+            buttonText="Prepared"
+            buttonAction={markAsPrepared}
+            showDetails={false}
+          />
+        ))}
+      </div>
     </div>
   );
 }
