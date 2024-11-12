@@ -1,10 +1,6 @@
 "use server";
 
 import fs from "node:fs";
-
-import { Mutex } from "async-mutex";
-import { existsSync, readFileSync } from "node:fs";
-import { DevBundlerService } from "next/dist/server/lib/dev-bundler-service";
 import Database from "better-sqlite3";
 
 export interface Order {
@@ -15,10 +11,16 @@ export interface Order {
   served: boolean;
 }
 
+export interface Menu {
+  name: string;
+  description: string;
+  stocks: number;
+}
+
 function runOnDb<T>(func: (db: Database.Database) => T) {
   const db = Database("db.sqlite");
   db.exec(fs.readFileSync("migration.sql").toString());
-  const res = func(db);
+  const res = db.transaction(func)(db);
   db.close();
   return res;
 }
@@ -32,15 +34,21 @@ function parseOrder(order: any): Order {
 }
 
 export const addOrder = async (amounts: number[], register: string) =>
-  runOnDb((db) =>
+  runOnDb((db) => {
+    for (let i = 0; i < amounts.length; i++) {
+      db.prepare("UPDATE menus SET stocks = stocks - ? WHERE id = ?;").run([
+        amounts[i],
+        i,
+      ]);
+    }
     parseOrder(
       db
         .prepare(
           "INSERT INTO orders(amounts, register) VALUES(?, ?) RETURNING *"
         )
         .get([JSON.stringify(amounts), register])
-    )
-  );
+    );
+  });
 
 export const getOrders = async () =>
   runOnDb((db) => parseOrders(db.prepare("SELECT * FROM orders").all()));
@@ -72,3 +80,6 @@ export const markAsServed = async (id: number) =>
   runOnDb((db) =>
     db.prepare("UPDATE orders SET served = true WHERE id = ?;").run([id])
   );
+
+export const getMenus = async () =>
+  runOnDb((db) => db.prepare("SELECT * FROM menus").all() as Menu[]);

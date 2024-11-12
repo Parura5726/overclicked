@@ -2,8 +2,14 @@
 
 import MenuSelect from "@/components/MenuSelect";
 import OrderStatus from "@/components/OrderStatus";
-import { addOrder, Order, getOrders, markAsServed } from "@/data";
-import { MENUS } from "@/menus";
+import {
+  addOrder,
+  Order,
+  getOrders,
+  markAsServed,
+  Menu,
+  getMenus,
+} from "@/data";
 import { delay } from "@/utils";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,12 +18,14 @@ export default function Page() {
   const params = useParams();
   const register = params["register"] as string;
   const [orders, setOrders] = useState([] as Order[]);
+  const [menus, setMenus] = useState([] as Menu[]);
 
   useEffect(() => {
     let fetch = true;
     let fn = async () => {
       while (fetch) {
         setOrders(await getOrders());
+        setMenus(await getMenus());
         await delay(1000);
       }
     };
@@ -29,23 +37,18 @@ export default function Page() {
     };
   }, []);
 
-  const [currentOrder, setCurrentOrder] = useState(
-    new Array(MENUS.length).fill(0)
-  );
+  const [currentOrder, setCurrentOrder] = useState(new Array(4).fill(0));
 
   return (
     <div className="register">
       <div className="register-select">
         <div className="menu-selections">
-          {MENUS.map((m, i) => (
+          {menus.map((m, i) => (
             <MenuSelect
               key={i}
               menu={m}
               numSelects={currentOrder[i]}
-              remaining={
-                m.initialStock -
-                orders.reduce((acc, o) => acc + o.amounts[i], 0)
-              }
+              remaining={m.stocks}
               addSelect={() => {
                 const newOrder = [...currentOrder];
                 newOrder[i] += 1;
@@ -62,7 +65,7 @@ export default function Page() {
         <button
           onClick={async () => {
             await addOrder(currentOrder, register);
-            setCurrentOrder(new Array(MENUS.length).fill(0));
+            setCurrentOrder(new Array(menus.length).fill(0));
           }}
         >
           Send Order
@@ -78,27 +81,31 @@ export default function Page() {
         >
           Admin
         </button>
-        {orders
-          .filter((o) => o.register === register)
-          .sort((a, b) => {
-            if (a.served !== b.served) return a.served ? 1 : -1;
-            if (a.prepared !== b.prepared) return a.prepared ? -1 : 1;
-            return b.id - a.id;
-          })
-          .map((o) => (
-            <OrderStatus
-              key={o.id}
-              menuItems={MENUS}
-              order={o}
-              buttonText="Serve"
-              buttonAction={markAsServed}
-              actionAvailable={o.prepared && !o.served}
-              showDetails={false}
-              showRegister={false}
-              archived={o.served}
-              statusIcon={o.served ? "✅" : o.prepared ? "🥪❗" : "⏳"}
-            />
-          ))}
+        {menus.length == 0 ? (
+          <></>
+        ) : (
+          orders
+            .filter((o) => o.register === register)
+            .sort((a, b) => {
+              if (a.served !== b.served) return a.served ? 1 : -1;
+              if (a.prepared !== b.prepared) return a.prepared ? -1 : 1;
+              return b.id - a.id;
+            })
+            .map((o) => (
+              <OrderStatus
+                key={o.id}
+                menuItems={menus}
+                order={o}
+                buttonText="Serve"
+                buttonAction={markAsServed}
+                actionAvailable={o.prepared && !o.served}
+                showDetails={false}
+                showRegister={false}
+                archived={o.served}
+                statusIcon={o.served ? "✅" : o.prepared ? "🥪❗" : "⏳"}
+              />
+            ))
+        )}
       </div>
     </div>
   );

@@ -1,19 +1,27 @@
 "use client";
 
 import OrderStatus from "@/components/OrderStatus";
-import { getOrders, markAsPrepared, markAsServed, Order } from "@/data";
-import { MENUS } from "@/menus";
+import {
+  getMenus,
+  getOrders,
+  markAsPrepared,
+  markAsServed,
+  Menu,
+  Order,
+} from "@/data";
 import { delay } from "@/utils";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [orders, setOrders] = useState([] as Order[]);
+  const [menus, setMenus] = useState([] as Menu[]);
 
   useEffect(() => {
     let fetch = true;
     let fn = async () => {
       while (fetch) {
         setOrders(await getOrders());
+        setMenus(await getMenus());
         await delay(1000);
       }
     };
@@ -44,9 +52,7 @@ export default function Home() {
             Croques
           </p>
         </div>
-        <div
-          className="stat purple"
-        >
+        <div className="stat purple">
           <h2>Prepared</h2>
           <p>{orders.filter((o) => o.prepared).length} Orders</p>
           <p>
@@ -72,15 +78,11 @@ export default function Home() {
         </div>
       </div>
       <div className="stats">
-        {MENUS.map((m, i) => (
+        {menus.map((m, i) => (
           <div key={i} className="stat">
             <h2>{m.name}</h2>
             <p>{orders.reduce((acc, o) => acc + o.amounts[i], 0)} Ordered</p>
-            <p>
-              {m.initialStock -
-                orders.reduce((acc, o) => acc + o.amounts[i], 0)}{" "}
-              Remaining
-            </p>
+            <p>{m.stocks} Remaining</p>
           </div>
         ))}
       </div>
@@ -102,9 +104,7 @@ export default function Home() {
                   .filter((o) => o.register === r)
                   .reduce((acc, o) => {
                     return acc + o.amounts.reduce((acc, a) => acc + a, 0);
-                  }, 0)
-                  
-                  }{" "}
+                  }, 0)}{" "}
                 Croques Sold
               </p>
               <span className="button-span">
@@ -127,25 +127,29 @@ export default function Home() {
           ))}
       </div>
       <div className="orders">
-        {orders
-          .sort((a, b) => b.id - a.id)
-          .map((o) => (
-            <OrderStatus
-              key={o.id}
-              menuItems={MENUS}
-              order={o}
-              showDetails={false}
-              showRegister={true}
-              archived={o.served}
-              statusIcon={o.served ? "✅" : o.prepared ? "🥪" : "⏳"}
-              actionAvailable={!o.served || !o.prepared}
-              buttonText={"Prepared & Served"}
-              buttonAction={() => {
-                markAsPrepared(o.id);
-                markAsServed(o.id);
-              }}
-            />
-          ))}
+        {menus.length == 0 ? (
+          <></>
+        ) : (
+          orders
+            .sort((a, b) => b.id - a.id)
+            .map((o) => (
+              <OrderStatus
+                key={o.id}
+                menuItems={menus}
+                order={o}
+                showDetails={false}
+                showRegister={true}
+                archived={o.served}
+                statusIcon={o.served ? "✅" : o.prepared ? "🥪" : "⏳"}
+                actionAvailable={!o.served || !o.prepared}
+                buttonText={"Prepared & Served"}
+                buttonAction={() => {
+                  markAsPrepared(o.id);
+                  markAsServed(o.id);
+                }}
+              />
+            ))
+        )}
       </div>
     </div>
   );

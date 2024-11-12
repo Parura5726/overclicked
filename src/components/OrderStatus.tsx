@@ -1,5 +1,4 @@
-import { Order } from "@/data";
-import { Menu } from "@/menus";
+import { Menu, Order } from "@/data";
 
 export default function OrderStatus({
   menuItems,
@@ -22,6 +21,7 @@ export default function OrderStatus({
   archived?: boolean;
   statusIcon?: string;
 }) {
+  console.log(menuItems)
   return (
     <div className={`order-status ${archived ? "archived" : ""}`}>
       <div>
