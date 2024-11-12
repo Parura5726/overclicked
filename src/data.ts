@@ -14,6 +14,7 @@ export interface Order {
 export interface Menu {
   name: string;
   description: string;
+  totalStocks: number;
   stocks: number;
 }
 
@@ -83,3 +84,12 @@ export const markAsServed = async (id: number) =>
 
 export const getMenus = async () =>
   runOnDb((db) => db.prepare("SELECT * FROM menus").all() as Menu[]);
+
+export const addMenuStocks = async (menu: number, stocks: number) =>
+  runOnDb((db) =>
+    db
+      .prepare(
+        "UPDATE menus SET stocks = stocks + ?, totalStocks = totalStocks + ? WHERE id = ?;"
+      )
+      .run([stocks, stocks, menu])
+  );
