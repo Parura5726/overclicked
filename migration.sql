@@ -33,7 +33,7 @@ INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         2,
         'Oblivion',
-        'Champingons, Oigions caramelisés, Pesto',
+        'Champigons, Oignons caramelisés, Pesto',
         100,
         100
     ) ON CONFLICT DO NOTHING;
