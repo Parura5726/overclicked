@@ -42,6 +42,12 @@ export const addOrder = async (amounts: number[], register: string) =>
         i,
       ]);
     }
+
+    const menus = db.prepare("SELECT * FROM menus").all() as Menu[];
+    if (menus.some((m, i) => m.stocks < 0)) {
+      throw new Error("Not enough stocks");
+    }
+
     parseOrder(
       db
         .prepare(
