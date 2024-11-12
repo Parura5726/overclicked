@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS menus(
     stocks INTEGER
 );
 -----
-INSERT INTO menus(id, name, description, stocks)
+INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         0,
         'Temptation',
@@ -21,7 +21,7 @@ VALUES(
         100,
         100
     ) ON CONFLICT DO NOTHING;
-INSERT INTO menus(id, name, description, stocks)
+INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         1,
         'Chaos',
@@ -29,7 +29,7 @@ VALUES(
         100,
         100
     ) ON CONFLICT DO NOTHING;
-INSERT INTO menus(id, name, description, stocks)
+INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         2,
         'Oblivion',
@@ -37,7 +37,7 @@ VALUES(
         100,
         100
     ) ON CONFLICT DO NOTHING;
-INSERT INTO menus(id, name, description, stocks)
+INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         3,
         'Craving',
