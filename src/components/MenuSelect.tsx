@@ -1,4 +1,4 @@
-import { Menu } from "@/menus";
+import { Menu } from "@/data";
 
 export default function MenuSelect({
   menu,
