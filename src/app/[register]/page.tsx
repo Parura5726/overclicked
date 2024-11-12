@@ -64,7 +64,13 @@ export default function Page() {
         </div>
         <button
           onClick={async () => {
-            await addOrder(currentOrder, register);
+            try {
+              await addOrder(currentOrder, register);
+            } catch {
+              alert(
+                "ERROR SENDING ORDER ! There are no more stocks available for the selected items."
+              );
+            }
             setCurrentOrder(new Array(menus.length).fill(0));
           }}
         >
@@ -73,14 +79,10 @@ export default function Page() {
       </div>
       <div className="register-orders">
         <h1>Register {register}</h1>
-        <button
-          className="admin-button"
-          onClick={() => {
-            window.location.href = `/`;
-          }}
-        >
+
+        <a className="admin-button" href="/">
           Admin
-        </button>
+        </a>
         {menus.length == 0 ? (
           <></>
         ) : (

@@ -15,7 +15,7 @@
     }
   }
 
-  button:not(.orders *) {
+  button:not(.orders *), a:not(.orders *) {
     --button-color: #333333;
     --button-text-color: #fff;
     padding: 0.5em;

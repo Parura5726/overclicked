@@ -37,9 +37,7 @@ export default function Home() {
     <div className="admin">
       <span className="button-span">
         <h1>Subsonic Catering</h1>
-        <button onClick={() => (window.location.href = "/preparation")}>
-          Preparation
-        </button>
+        <a href="/preparation">Preparation</a>
       </span>
       <div className="stats">
         <div className="stat purple">
@@ -108,20 +106,8 @@ export default function Home() {
                 Croques Sold
               </p>
               <span className="button-span">
-                <button
-                  onClick={() => {
-                    window.location.href = `/${r}`;
-                  }}
-                >
-                  Register
-                </button>
-                <button
-                  onClick={() => {
-                    window.location.href = `/${r}/public`;
-                  }}
-                >
-                  Public
-                </button>
+                <a href={`/${r}`}>Register</a>
+                <a href={`/${r}/public`}>Public</a>
               </span>
             </div>
           ))}
