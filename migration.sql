@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS orders(
     amounts TEXT,
     register TEXT,
     prepared BOOLEAN DEFAULT false,
-    served BOOLEAN DEFAULT false
+    served BOOLEAN DEFAULT false,
+    canceled BOOLEAN DEFAULT false
 );
 CREATE TABLE IF NOT EXISTS menus(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

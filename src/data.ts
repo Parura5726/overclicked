@@ -9,6 +9,7 @@ export interface Order {
   register: string;
   prepared: boolean;
   served: boolean;
+  canceled: boolean;
 }
 
 export interface Menu {
@@ -63,7 +64,11 @@ export const getOrders = async () =>
 export const getOrdersToPrepare = async () =>
   runOnDb((db) =>
     parseOrders(
-      db.prepare("SELECT * FROM orders WHERE prepared = false;").all()
+      db
+        .prepare(
+          "SELECT * FROM orders WHERE canceled = false AND prepared = false;"
+        )
+        .all()
     )
   );
 
@@ -72,7 +77,7 @@ export const getOrdersToServe = async (register: string) =>
     parseOrders(
       db
         .prepare(
-          "SELECT * FROM orders WHERE prepared = true AND served = false AND register = ?;"
+          "SELECT * FROM orders WHERE canceled = false AND prepared = true AND served = false AND register = ?;"
         )
         .all([register])
     )
@@ -87,6 +92,11 @@ export const markAsServed = async (id: number) =>
   runOnDb((db) =>
     db.prepare("UPDATE orders SET served = true WHERE id = ?;").run([id])
   );
+
+export const cancelOrder = async (id: number) =>
+  runOnDb((db) => {
+    db.prepare("UPDATE orders SET canceled = true WHERE id = ?;").run([id]);
+  });
 
 export const getMenus = async () =>
   runOnDb((db) => db.prepare("SELECT * FROM menus").all() as Menu[]);
