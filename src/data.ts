@@ -87,10 +87,18 @@ export const markAsPrepared = async (id: number) =>
   runOnDb((db) =>
     db.prepare("UPDATE orders SET prepared = true WHERE id = ?;").run([id])
   );
+export const markAsNotPrepared = async (id: number) =>
+  runOnDb((db) =>
+    db.prepare("UPDATE orders SET prepared = false WHERE id = ?;").run([id])
+  );
 
 export const markAsServed = async (id: number) =>
   runOnDb((db) =>
     db.prepare("UPDATE orders SET served = true WHERE id = ?;").run([id])
+  );
+export const markAsNotServed = async (id: number) =>
+  runOnDb((db) =>
+    db.prepare("UPDATE orders SET served = false WHERE id = ?;").run([id])
   );
 
 export const cancelOrder = async (id: number) =>
