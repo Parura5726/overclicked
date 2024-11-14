@@ -10,6 +10,7 @@ import {
   Menu,
   getMenus,
   cancelOrder,
+  markAsNotServed,
 } from "@/data";
 import { delay } from "@/utils";
 import { useParams } from "next/navigation";
@@ -88,9 +89,7 @@ export default function Page() {
           <></>
         ) : (
           orders
-            .filter((o) => 
-              o.register === register && !o.canceled
-          )
+            .filter((o) => o.register === register && !o.canceled)
             .sort((a, b) => {
               if (a.served !== b.served) return a.served ? 1 : -1;
               if (a.prepared !== b.prepared) return a.prepared ? -1 : 1;
@@ -101,19 +100,28 @@ export default function Page() {
                 key={o.id}
                 menuItems={menus}
                 order={o}
-                buttonText="Serve"
-                buttonAction={markAsServed}
-                actionAvailable={o.prepared && !o.served}
+                buttonText={
+                  o.served ? "Undo Serve" : o.prepared ? "Serve" : "Cancel"
+                }
+                buttonAction={
+                  o.served
+                    ? markAsNotServed
+                    : o.prepared
+                    ? markAsServed
+                    : (id: number) => {
+                        if (
+                          confirm("Are you sure you want to cancel this order?")
+                        ) {
+                          cancelOrder(id);
+                        }
+                      }
+                }
+                actionAvailable={true}
+                actionIsDanger={!o.prepared && !o.served}
                 showDetails={false}
                 showRegister={false}
                 archived={o.served}
                 statusIcon={o.served ? "✅" : o.prepared ? "🥪❗" : "⏳"}
-                cancelable={!o.prepared && !o.served}
-                cancelAction={() => {
-                  if (confirm("Are you sure you want to cancel this order?")) {
-                    cancelOrder(o.id);
-                  }
-                }}
               />
             ))
         )}

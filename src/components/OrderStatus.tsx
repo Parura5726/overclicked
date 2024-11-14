@@ -6,26 +6,24 @@ export default function OrderStatus({
   buttonText,
   buttonAction,
   actionAvailable = true,
+  actionIsDanger = false,
   showDetails = true,
   showRegister = true,
   archived = false,
   statusIcon = "",
-  cancelable = false,
-  cancelAction = () => {},
 }: {
   menuItems: Menu[];
   order: Order;
   buttonText: string;
   buttonAction: (id: number) => void;
   actionAvailable?: boolean;
+  actionIsDanger?: boolean;
   showDetails?: boolean;
   showRegister?: boolean;
   archived?: boolean;
   statusIcon?: string;
-  cancelable?: boolean;
-  cancelAction?: (id: number) => void;
 }) {
-  console.log(menuItems)
+  console.log(menuItems);
   return (
     <div className={`order-status ${archived ? "archived" : ""}`}>
       <div>
@@ -39,8 +37,9 @@ export default function OrderStatus({
         {order.amounts.map((amount, i) =>
           amount > 0 ? (
             <div key={i} className="order-item">
-              <p className="center-text">
-                <b>{menuItems[i].name}</b> <span className="big-num">{amount}</span>
+              <p>
+                <b>{menuItems[i].name}</b>{" "}
+                <span className="big-num">{amount}</span>
               </p>
               {showDetails ? <p>{menuItems[i].description}</p> : null}
             </div>
@@ -48,11 +47,12 @@ export default function OrderStatus({
         )}
       </div>
       {actionAvailable ? (
-        <button onClick={() => buttonAction(order.id)}>{buttonText}</button>
-      ) : null}
-      {cancelable ? (
-        <button className="danger-button"
-        onClick={() => cancelAction(order.id)}>Cancel</button>
+        <button
+          className={actionIsDanger ? "danger" : ""}
+          onClick={() => buttonAction(order.id)}
+        >
+          {buttonText}
+        </button>
       ) : null}
     </div>
   );
