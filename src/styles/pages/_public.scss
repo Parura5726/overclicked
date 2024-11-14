@@ -14,10 +14,19 @@
   }
 
   .menu {
-    padding: 1em;
+
+    position: relative;
 
     img {
+
+    padding: 1em;
       height: 100%;
+
+      &.strike {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
     }
   }
 
