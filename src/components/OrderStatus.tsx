@@ -10,6 +10,8 @@ export default function OrderStatus({
   showRegister = true,
   archived = false,
   statusIcon = "",
+  deletable = false,
+  deleteAction = () => {},
 }: {
   menuItems: Menu[];
   order: Order;
@@ -20,6 +22,8 @@ export default function OrderStatus({
   showRegister?: boolean;
   archived?: boolean;
   statusIcon?: string;
+  deletable?: boolean;
+  deleteAction?: (id: number) => void;
 }) {
   console.log(menuItems)
   return (
@@ -45,6 +49,9 @@ export default function OrderStatus({
       </div>
       {actionAvailable ? (
         <button onClick={() => buttonAction(order.id)}>{buttonText}</button>
+      ) : null}
+      {deletable ? (
+        <button onClick={() => deleteAction(order.id)}>Delete</button>
       ) : null}
     </div>
   );
