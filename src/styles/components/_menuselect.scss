@@ -41,6 +41,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: bold;
+    font-size: 1.8rem;
   }
 
   .badge-remove-select {
@@ -53,7 +55,6 @@
   }
 
   .badge-num-select {
-    font-size: 1.8rem;
     background-color: rgb(0, 5, 80);
     top: -12%;
     right: -6%;
