@@ -4,6 +4,7 @@ import { getMenus, getOrdersToServe, Menu, Order } from "@/data";
 import { delay } from "@/utils";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import menuCroques from "@public/menu-croques.svg";
 
 export default function Public() {
   const params = useParams();
@@ -31,14 +32,7 @@ export default function Public() {
   return (
     <div className="public">
       <div className="menu">
-        <h1>Menu</h1>
-        {menus.map((m, i) => (
-          <div key={i} className="menu-item">
-            <h2>{m.name}</h2>
-            <p>{m.description}</p>
-          </div>
-        ))}
-        <div className="menu-info">Prix : 1CHF</div>
+        <img src={menuCroques.src} alt="Menu Croques" />
       </div>
       <div className="ready-orders">
         <h1>Ready for Pick Up</h1>
