@@ -10,8 +10,8 @@ export default function OrderStatus({
   showRegister = true,
   archived = false,
   statusIcon = "",
-  deletable = false,
-  deleteAction = () => {},
+  cancelable = false,
+  cancelAction = () => {},
 }: {
   menuItems: Menu[];
   order: Order;
@@ -22,8 +22,8 @@ export default function OrderStatus({
   showRegister?: boolean;
   archived?: boolean;
   statusIcon?: string;
-  deletable?: boolean;
-  deleteAction?: (id: number) => void;
+  cancelable?: boolean;
+  cancelAction?: (id: number) => void;
 }) {
   console.log(menuItems)
   return (
@@ -39,8 +39,8 @@ export default function OrderStatus({
         {order.amounts.map((amount, i) =>
           amount > 0 ? (
             <div key={i} className="order-item">
-              <p>
-                <b>{menuItems[i].name}</b> <span>{amount}</span>
+              <p className="center-text">
+                <b>{menuItems[i].name}</b> <span className="big-num">{amount}</span>
               </p>
               {showDetails ? <p>{menuItems[i].description}</p> : null}
             </div>
@@ -50,8 +50,9 @@ export default function OrderStatus({
       {actionAvailable ? (
         <button onClick={() => buttonAction(order.id)}>{buttonText}</button>
       ) : null}
-      {deletable ? (
-        <button onClick={() => deleteAction(order.id)}>Delete</button>
+      {cancelable ? (
+        <button className="danger-button"
+        onClick={() => cancelAction(order.id)}>Cancel</button>
       ) : null}
     </div>
   );
