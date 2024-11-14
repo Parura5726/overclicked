@@ -103,6 +103,17 @@ export const markAsNotServed = async (id: number) =>
 
 export const cancelOrder = async (id: number) =>
   runOnDb((db) => {
+    const order = parseOrder(
+      db.prepare("SELECT * FROM orders WHERE id = ?;").get([id])
+    );
+
+    for (let i = 0; i < order.amounts.length; i++) {
+      db.prepare("UPDATE menus SET stocks = stocks  ? WHERE id = ?;").run([
+        order.amounts[i],
+        i,
+      ]);
+    }
+
     db.prepare("UPDATE orders SET canceled = true WHERE id = ?;").run([id]);
   });
 
