@@ -7,13 +7,27 @@
     user-select: none;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 0.5em;
+    justify-content: space-between;
+    gap: 1em;
     padding: 1em;
     align-items: center;
     border-radius: 0.5em;
     background-color: #f19696;
     flex: 1 1 5%;
+
+    --button-color: #333;
+    --button-text-color: #fff;
+
+    &.danger {
+      background-color: #ff4040;
+    }
+
+    .stat-chunk {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6em;
+      align-items: center;
+    }
 
     p {
       font-size: 1.3em;

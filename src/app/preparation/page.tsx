@@ -4,6 +4,7 @@ import OrderStatus from "@/components/OrderStatus";
 import {
   Menu,
   Order,
+  addMenuStocks,
   getMenus,
   getOrders,
   getOrdersToPrepare,
@@ -39,19 +40,30 @@ export default function Page() {
     <div className="preparation">
       <div className="stats">
         {menus.map((m, i) => (
-          <div key={i} className="stat">
-            <h2>{m.name}</h2>
-            <p>{m.description}</p>
-            <p>
-              <b className="big-num">
-                {ordersToPrepare.reduce((acc, o) => acc + o.amounts[i], 0)}{" "}
-              </b>
-              to prepare
-            </p>
-            <p>
-              <b>{m.stocks} </b>
-              remaining
-            </p>
+          <div key={i} className={`stat ${m.stocks <= 20 ? "danger" : ""}`}>
+            <div className="stat-chunk">
+              <h2>{m.name}</h2>
+              <p>{m.description}</p>
+            </div>
+            <div className="stat-chunk">
+              <p>
+                <b className="big-num">
+                  {ordersToPrepare.reduce((acc, o) => acc + o.amounts[i], 0)}{" "}
+                </b>
+                to prepare
+              </p>
+              <p>
+                <b>{m.stocks} </b>
+                remaining
+              </p>
+              <button
+                onClick={() => {
+                  addMenuStocks(i, 5);
+                }}
+              >
+                Add 5 to stock
+              </button>
+            </div>
           </div>
         ))}
       </div>
