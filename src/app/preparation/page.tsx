@@ -43,7 +43,7 @@ export default function Page() {
             <h2>{m.name}</h2>
             <p>{m.description}</p>
             <p>
-              <b>
+              <b className="big-num">
                 {ordersToPrepare.reduce((acc, o) => acc + o.amounts[i], 0)}{" "}
               </b>
               to prepare
