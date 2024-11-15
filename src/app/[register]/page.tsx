@@ -13,6 +13,7 @@ import {
   markAsNotServed,
 } from "@/data";
 import { delay } from "@/utils";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -82,9 +83,9 @@ export default function Page() {
       <div className="register-orders">
         <h1>Register {register}</h1>
 
-        <a className="admin-button" href="/">
+        <Link className="admin-button" href="/">
           Admin
-        </a>
+        </Link>
         {menus.length == 0 ? (
           <></>
         ) : (

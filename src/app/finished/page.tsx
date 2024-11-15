@@ -9,7 +9,7 @@ import menuCroques from "@public/menu-croques.svg";
 export default function Finished() {
   return (
     <div className="finished">
-      <h1>We're all out ! Sorry :{")"}</h1>
+      <h1>We&apos;re all out ! Sorry :{")"}</h1>
     </div>
   );
 }

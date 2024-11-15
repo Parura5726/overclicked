@@ -10,6 +10,7 @@ import {
   Order,
 } from "@/data";
 import { delay } from "@/utils";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -37,7 +38,7 @@ export default function Home() {
     <div className="admin">
       <span className="button-span">
         <h1>Subsonic Catering</h1>
-        <a href="/preparation">Preparation</a>
+        <Link href="/preparation">Preparation</Link>
       </span>
       <div className="stats">
         <div className="stat purple">
