@@ -19,30 +19,30 @@ VALUES(
         0,
         'Temptation',
         'Tomates séchées, Mozza, Pesto',
-        100,
-        100
+        145,
+        145
     ) ON CONFLICT DO NOTHING;
 INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         1,
         'Chaos',
         'Chèvre, Miel',
-        100,
-        100
+        165,
+        165
     ) ON CONFLICT DO NOTHING;
 INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         2,
         'Oblivion',
         'Champigons, Oignons caramelisés, Pesto',
-        100,
-        100
+        95,
+        95
     ) ON CONFLICT DO NOTHING;
 INSERT INTO menus(id, name, description, totalStocks, stocks)
 VALUES(
         3,
         'Craving',
         'Ovomaltine',
-        100,
-        100
+        95,
+        95
     ) ON CONFLICT DO NOTHING;
