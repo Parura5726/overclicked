@@ -15,6 +15,13 @@ type Strike = {
   alt: string;
 };
 
+const strikes: { [key: string]: string } = {
+  Temptation: temptationStrike.src,
+  Chaos: chaosStrike.src,
+  Oblivion: oblivionStrike.src,
+  Craving: cravingStrike.src,
+};
+
 export default function Public() {
   const params = useParams();
   const register = params["register"] as string;
@@ -46,21 +53,17 @@ export default function Public() {
           .filter((m) => m.stocks < 5)
           .map((m) => {
             return {
-              src:
-                m.name === "Temptation"
-                  ? temptationStrike.src
-                  : m.name === "Chaos"
-                  ? chaosStrike.src
-                  : m.name === "Oblivion"
-                  ? oblivionStrike.src
-                  : m.name === "Craving"
-                  ? cravingStrike.src
-                  : null,
+              src: strikes[m.name],
               alt: m.name,
             };
           })
           .map((strike: Strike) => (
-            <img key={strike.alt} className="strike" src={strike.src} alt={strike.alt} />
+            <img
+              key={strike.alt}
+              className="strike"
+              src={strike.src}
+              alt={strike.alt}
+            />
           ))}
       </div>
       <div className="ready-orders">
