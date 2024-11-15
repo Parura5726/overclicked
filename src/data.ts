@@ -108,7 +108,7 @@ export const cancelOrder = async (id: number) =>
     );
 
     for (let i = 0; i < order.amounts.length; i++) {
-      db.prepare("UPDATE menus SET stocks = stocks  ? WHERE id = ?;").run([
+      db.prepare("UPDATE menus SET stocks = stocks + ? WHERE id = ?;").run([
         order.amounts[i],
         i,
       ]);
