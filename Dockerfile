@@ -8,9 +8,10 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-ENV OVERCLICKED_DB_DIR=.
+RUN mkdir /db
+ENV OVERCLICKED_DB_DIR=/db
 
-RUN chown -R node .
+RUN chown -R node /db
 USER node
 
 CMD ["npm", "start"]
