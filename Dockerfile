@@ -6,6 +6,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
+ENV NEXT_PUBLIC_API_URL=/overclicked
 RUN npm run build
 
 RUN mkdir /db
